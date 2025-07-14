@@ -1,0 +1,13 @@
+<mat-card>
+  <mat-card-title>Festivos en Colombia</mat-card-title>
+  <mat-form-field appearance="fill">
+    <mat-label>Seleccionar fecha</mat-label>
+    <input matInput [matDatepicker]="picker" [(ngModel)]="fechaSeleccionada">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="validarFecha()">Validar fecha</button>
+  <div *ngIf="resultado !== null" style="margin-top: 16px;">
+    <mat-card>{{ resultado }}</mat-card>
+  </div>
+</mat-card>

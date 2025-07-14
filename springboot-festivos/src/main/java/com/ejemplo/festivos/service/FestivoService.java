@@ -85,4 +85,40 @@ public class FestivoService {
         }
         return fecha;
     }
+    public java.util.List<java.util.Map<String, String>> obtenerFestivos(int anio) {
+        java.util.List<Festivo> todos = festivoRepository.findAll();
+        java.util.List<java.util.Map<String, String>> resultado = new java.util.ArrayList<>();
+        for (Festivo festivo : todos) {
+            int tipo = festivo.getTipo().getId();
+            LocalDate fecha = null;
+            try {
+                if (tipo == 1) {
+                    if (festivo.getMes() != null && festivo.getDia() != null && festivo.getMes() > 0 && festivo.getDia() > 0) {
+                        fecha = LocalDate.of(anio, festivo.getMes(), festivo.getDia());
+                    }
+                } else if (tipo == 2) {
+                    if (festivo.getMes() != null && festivo.getDia() != null && festivo.getMes() > 0 && festivo.getDia() > 0) {
+                        LocalDate base = LocalDate.of(anio, festivo.getMes(), festivo.getDia());
+                        fecha = siguienteLunes(base);
+                    }
+                } else if (tipo == 3) {
+                    LocalDate pascua = getDomingoPascua(anio);
+                    fecha = pascua.plusDays(festivo.getDiasPascua());
+                } else if (tipo == 4) {
+                    LocalDate pascua = getDomingoPascua(anio);
+                    LocalDate base = pascua.plusDays(festivo.getDiasPascua());
+                    fecha = siguienteLunes(base);
+                }
+                if (fecha != null && fecha.getYear() == anio) {
+                    java.util.Map<String, String> festivoMap = new java.util.HashMap<>();
+                    festivoMap.put("festivo", festivo.getNombre());
+                    festivoMap.put("fecha", fecha.toString());
+                    resultado.add(festivoMap);
+                }
+            } catch (Exception e) {
+                continue;
+            }
+        }
+        return resultado;
+    }
 }

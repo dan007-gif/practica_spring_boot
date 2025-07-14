@@ -1,0 +1,23 @@
+<mat-card>
+  <mat-card-title>Festivos en Colombia</mat-card-title>
+  <mat-form-field appearance="fill">
+    <mat-label>Año</mat-label>
+    <input matInput type="number" [(ngModel)]="anio">
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="obtenerFestivos()">Obtener Festivos</button>
+
+  <table mat-table [dataSource]="festivos" *ngIf="festivos && festivos.length > 0" class="mat-elevation-z8" style="width:100%; margin-top:20px;">
+    <ng-container matColumnDef="festivo">
+      <th mat-header-cell *matHeaderCellDef> Festivo </th>
+      <td mat-cell *matCellDef="let element"> {{element.festivo}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="fecha">
+      <th mat-header-cell *matHeaderCellDef> Fecha </th>
+      <td mat-cell *matCellDef="let element"> {{element.fecha}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="['festivo', 'fecha']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['festivo', 'fecha'];"></tr>
+  </table>
+</mat-card>
